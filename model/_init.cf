@@ -42,7 +42,7 @@ implementation masterImpl:
     
     svc = std::Service(host = host, name = "hbase-master", state = "running", onboot = true)
     svc.requires = [pkg, config]
-    svc.require = std::Service[host = host, name = "hbase-file-increase"]
+    svc.requires = std::Service[host = host, name = "hbase-file-increase"]
 end
 
 implementation regionImpl:
@@ -53,7 +53,7 @@ implementation regionImpl:
         
     svc = std::Service(host = host, name = "hbase-regionserver", state = "running", onboot = true)
     svc.requires = [pkg, config]
-    svc.require = std::Service[host = host, name = "hbase-file-increase"]
+    svc.requires = std::Service[host = host, name = "hbase-file-increase"]
 
 end
 
