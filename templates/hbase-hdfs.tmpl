@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ ! -d "{{ nameDir }}/current" ]; then
+  # Control will enter here if $DIRECTORY doesn't exist.
+  echo "Initializing!"
+  mkdir -p {{ nameDir }}
+  hdfs namenode -format
+fi
+
+
+hdfs namenode &
+hdfs datanode &
+
+hadoop fs -mkdir /{{ directory }}
+hadoop fs -chown hbase /{{ directory }} 

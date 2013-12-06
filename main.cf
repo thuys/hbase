@@ -1,0 +1,13 @@
+vm1 = ip::Host(name = "vmHB1", os = "fedora-18", ip = "172.16.32.21")
+vm2 = ip::Host(name = "vmHB2", os = "fedora-18", ip = "172.16.32.24")
+vm3 = ip::Host(name = "vmHB3", os = "fedora-18", ip = "172.16.32.25")
+vm4 = ip::Host(name = "vmHB4", os = "fedora-18", ip = "172.16.32.26")
+
+master = hbase::HBaseMaster(host = vm1)
+region1 = hbase::HBaseRegion(host = vm2)
+region2 = hbase::HBaseRegion(host = vm3)
+
+zookeeper = hbase::Zookeeper(host = vm4)
+hdfs = hbase::HadoopHDFS(host = vm4)
+
+cluster = hbase::HBaseCluster(master=master, regions=[region1, region2], zookeeper = zookeeper, hdfs = hdfs)

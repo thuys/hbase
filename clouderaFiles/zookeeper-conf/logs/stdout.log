@@ -1,0 +1,7 @@
+Tue Dec  3 01:43:58 PST 2013
+using /usr/java/jdk1.6.0_32 as JAVA_HOME
+CDH_VERSION is 4
+ZOOKEEPER_HOME is /usr/lib/zookeeper
+configuration directory is /var/run/cloudera-scm-agent/process/3-zookeeper-server
+server id (myid) is 1
+data directory is /var/lib/zookeeper

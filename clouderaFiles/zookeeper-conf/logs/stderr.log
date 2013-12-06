@@ -1,0 +1,55 @@
+Tue Dec  3 01:43:58 PST 2013
++ locate_java_home
++ '[' -z '' ']'
++ for candidate in /usr/lib/j2sdk1.6-sun /usr/lib/jvm/java-6-sun '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*' '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*/jre/' /usr/lib/jvm/j2sdk1.6-oracle /usr/lib/jvm/j2sdk1.6-oracle/jre '/usr/java/jdk1.6*' '/usr/java/jre1.6*' '/usr/java/jdk1.7*' '/usr/java/jre1.7*' /usr/lib/jvm/j2sdk1.7-oracle /usr/lib/jvm/j2sdk1.7-oracle/jre /Library/Java/Home /usr/java/default /usr/lib/jvm/default-java /usr/lib/jvm/java-openjdk /usr/lib/jvm/jre-openjdk '/usr/lib/jvm/java-1.7.0-openjdk*' '/usr/lib/jvm/java-7-openjdk*' '/usr/lib/jvm/java-1.6.0-openjdk-1.6.*' '/usr/lib/jvm/jre-1.6.0-openjdk*'
++ '[' -e /usr/lib/j2sdk1.6-sun/bin/java ']'
++ for candidate in /usr/lib/j2sdk1.6-sun /usr/lib/jvm/java-6-sun '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*' '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*/jre/' /usr/lib/jvm/j2sdk1.6-oracle /usr/lib/jvm/j2sdk1.6-oracle/jre '/usr/java/jdk1.6*' '/usr/java/jre1.6*' '/usr/java/jdk1.7*' '/usr/java/jre1.7*' /usr/lib/jvm/j2sdk1.7-oracle /usr/lib/jvm/j2sdk1.7-oracle/jre /Library/Java/Home /usr/java/default /usr/lib/jvm/default-java /usr/lib/jvm/java-openjdk /usr/lib/jvm/jre-openjdk '/usr/lib/jvm/java-1.7.0-openjdk*' '/usr/lib/jvm/java-7-openjdk*' '/usr/lib/jvm/java-1.6.0-openjdk-1.6.*' '/usr/lib/jvm/jre-1.6.0-openjdk*'
++ '[' -e /usr/lib/jvm/java-6-sun/bin/java ']'
++ for candidate in /usr/lib/j2sdk1.6-sun /usr/lib/jvm/java-6-sun '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*' '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*/jre/' /usr/lib/jvm/j2sdk1.6-oracle /usr/lib/jvm/j2sdk1.6-oracle/jre '/usr/java/jdk1.6*' '/usr/java/jre1.6*' '/usr/java/jdk1.7*' '/usr/java/jre1.7*' /usr/lib/jvm/j2sdk1.7-oracle /usr/lib/jvm/j2sdk1.7-oracle/jre /Library/Java/Home /usr/java/default /usr/lib/jvm/default-java /usr/lib/jvm/java-openjdk /usr/lib/jvm/jre-openjdk '/usr/lib/jvm/java-1.7.0-openjdk*' '/usr/lib/jvm/java-7-openjdk*' '/usr/lib/jvm/java-1.6.0-openjdk-1.6.*' '/usr/lib/jvm/jre-1.6.0-openjdk*'
++ '[' -e '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*/bin/java' ']'
++ for candidate in /usr/lib/j2sdk1.6-sun /usr/lib/jvm/java-6-sun '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*' '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*/jre/' /usr/lib/jvm/j2sdk1.6-oracle /usr/lib/jvm/j2sdk1.6-oracle/jre '/usr/java/jdk1.6*' '/usr/java/jre1.6*' '/usr/java/jdk1.7*' '/usr/java/jre1.7*' /usr/lib/jvm/j2sdk1.7-oracle /usr/lib/jvm/j2sdk1.7-oracle/jre /Library/Java/Home /usr/java/default /usr/lib/jvm/default-java /usr/lib/jvm/java-openjdk /usr/lib/jvm/jre-openjdk '/usr/lib/jvm/java-1.7.0-openjdk*' '/usr/lib/jvm/java-7-openjdk*' '/usr/lib/jvm/java-1.6.0-openjdk-1.6.*' '/usr/lib/jvm/jre-1.6.0-openjdk*'
++ '[' -e '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*/jre//bin/java' ']'
++ for candidate in /usr/lib/j2sdk1.6-sun /usr/lib/jvm/java-6-sun '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*' '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*/jre/' /usr/lib/jvm/j2sdk1.6-oracle /usr/lib/jvm/j2sdk1.6-oracle/jre '/usr/java/jdk1.6*' '/usr/java/jre1.6*' '/usr/java/jdk1.7*' '/usr/java/jre1.7*' /usr/lib/jvm/j2sdk1.7-oracle /usr/lib/jvm/j2sdk1.7-oracle/jre /Library/Java/Home /usr/java/default /usr/lib/jvm/default-java /usr/lib/jvm/java-openjdk /usr/lib/jvm/jre-openjdk '/usr/lib/jvm/java-1.7.0-openjdk*' '/usr/lib/jvm/java-7-openjdk*' '/usr/lib/jvm/java-1.6.0-openjdk-1.6.*' '/usr/lib/jvm/jre-1.6.0-openjdk*'
++ '[' -e /usr/lib/jvm/j2sdk1.6-oracle/bin/java ']'
++ for candidate in /usr/lib/j2sdk1.6-sun /usr/lib/jvm/java-6-sun '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*' '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*/jre/' /usr/lib/jvm/j2sdk1.6-oracle /usr/lib/jvm/j2sdk1.6-oracle/jre '/usr/java/jdk1.6*' '/usr/java/jre1.6*' '/usr/java/jdk1.7*' '/usr/java/jre1.7*' /usr/lib/jvm/j2sdk1.7-oracle /usr/lib/jvm/j2sdk1.7-oracle/jre /Library/Java/Home /usr/java/default /usr/lib/jvm/default-java /usr/lib/jvm/java-openjdk /usr/lib/jvm/jre-openjdk '/usr/lib/jvm/java-1.7.0-openjdk*' '/usr/lib/jvm/java-7-openjdk*' '/usr/lib/jvm/java-1.6.0-openjdk-1.6.*' '/usr/lib/jvm/jre-1.6.0-openjdk*'
++ '[' -e /usr/lib/jvm/j2sdk1.6-oracle/jre/bin/java ']'
++ for candidate in /usr/lib/j2sdk1.6-sun /usr/lib/jvm/java-6-sun '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*' '/usr/lib/jvm/java-1.6.0-sun-1.6.0.*/jre/' /usr/lib/jvm/j2sdk1.6-oracle /usr/lib/jvm/j2sdk1.6-oracle/jre '/usr/java/jdk1.6*' '/usr/java/jre1.6*' '/usr/java/jdk1.7*' '/usr/java/jre1.7*' /usr/lib/jvm/j2sdk1.7-oracle /usr/lib/jvm/j2sdk1.7-oracle/jre /Library/Java/Home /usr/java/default /usr/lib/jvm/default-java /usr/lib/jvm/java-openjdk /usr/lib/jvm/jre-openjdk '/usr/lib/jvm/java-1.7.0-openjdk*' '/usr/lib/jvm/java-7-openjdk*' '/usr/lib/jvm/java-1.6.0-openjdk-1.6.*' '/usr/lib/jvm/jre-1.6.0-openjdk*'
++ '[' -e /usr/java/jdk1.6.0_32/bin/java ']'
++ export JAVA_HOME=/usr/java/jdk1.6.0_32
++ JAVA_HOME=/usr/java/jdk1.6.0_32
++ break
++ '[' -z /usr/java/jdk1.6.0_32 ']'
++ source_parcel_environment
++ '[' '!' -z '' ']'
++ '[' /usr/java/jdk1.6.0_32 '!=' '' ']'
++ JAVA=/usr/java/jdk1.6.0_32/bin/java
++ MYID=1
++ DATA_DIR=/var/lib/zookeeper
++ export ZOOKEEPER_HOME=/usr/lib/zookeeper
++ ZOOKEEPER_HOME=/usr/lib/zookeeper
++ echo 'using /usr/java/jdk1.6.0_32 as JAVA_HOME'
++ echo 'CDH_VERSION is 4'
++ echo 'ZOOKEEPER_HOME is /usr/lib/zookeeper'
++ echo 'configuration directory is /var/run/cloudera-scm-agent/process/3-zookeeper-server'
++ echo 'server id (myid) is 1'
++ echo 'data directory is /var/lib/zookeeper'
++ set_zookeeper_classpath
++ set_classpath_in_var ZOOKEEPER_CLASSPATH
++ '[' -z ZOOKEEPER_CLASSPATH ']'
++ '[' /usr/share/cmf ']'
+++ tr '\n' :
+++ find /usr/share/cmf/lib/plugins -name '*.jar'
++ ADD_TO_CP=/usr/share/cmf/lib/plugins/tt-instrumentation-4.7.2.jar:/usr/share/cmf/lib/plugins/navigator-plugin-4.7.2-shaded.jar:/usr/share/cmf/lib/plugins/event-publish-4.7.2-shaded.jar:
++ ADD_TO_CP=/usr/share/cmf/lib/plugins/tt-instrumentation-4.7.2.jar:/usr/share/cmf/lib/plugins/navigator-plugin-4.7.2-shaded.jar:/usr/share/cmf/lib/plugins/event-publish-4.7.2-shaded.jar
++ eval 'OLD_VALUE=$ZOOKEEPER_CLASSPATH'
+++ OLD_VALUE=
++ '[' -z ']'
++ export ZOOKEEPER_CLASSPATH=/usr/share/cmf/lib/plugins/tt-instrumentation-4.7.2.jar:/usr/share/cmf/lib/plugins/navigator-plugin-4.7.2-shaded.jar:/usr/share/cmf/lib/plugins/event-publish-4.7.2-shaded.jar
++ ZOOKEEPER_CLASSPATH=/usr/share/cmf/lib/plugins/tt-instrumentation-4.7.2.jar:/usr/share/cmf/lib/plugins/navigator-plugin-4.7.2-shaded.jar:/usr/share/cmf/lib/plugins/event-publish-4.7.2-shaded.jar
++ '[' '!' -d /var/lib/zookeeper ']'
++ echo 1
++ '[' '' '!=' '' ']'
++ '[' '' '!=' '' ']'
++ export 'ZOOKEEPER_SERVER_OPTS=-Djava.net.preferIPv4Stack=true -Dzookeeper.log.file=zookeeper-cmf-zookeeper1-SERVER-localhost.localdomain.log -Dzookeeper.log.dir=/var/log/zookeeper -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dzookeeper.datadir.autocreate=false -Xmx1073741824   '
++ ZOOKEEPER_SERVER_OPTS='-Djava.net.preferIPv4Stack=true -Dzookeeper.log.file=zookeeper-cmf-zookeeper1-SERVER-localhost.localdomain.log -Dzookeeper.log.dir=/var/log/zookeeper -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dzookeeper.datadir.autocreate=false -Xmx1073741824   '
++ exec /usr/java/jdk1.6.0_32/bin/java -cp '/var/run/cloudera-scm-agent/process/3-zookeeper-server:/usr/lib/zookeeper/lib/log4j.jar:/usr/lib/zookeeper/build/*:/usr/lib/zookeeper/build/lib/*:/usr/lib/zookeeper/*:/usr/lib/zookeeper/lib/*:/usr/share/cmf/lib/plugins/tt-instrumentation-4.7.2.jar:/usr/share/cmf/lib/plugins/navigator-plugin-4.7.2-shaded.jar:/usr/share/cmf/lib/plugins/event-publish-4.7.2-shaded.jar' -Djava.net.preferIPv4Stack=true -Dzookeeper.log.file=zookeeper-cmf-zookeeper1-SERVER-localhost.localdomain.log -Dzookeeper.log.dir=/var/log/zookeeper -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dzookeeper.datadir.autocreate=false -Xmx1073741824 org.apache.zookeeper.server.quorum.QuorumPeerMain /var/run/cloudera-scm-agent/process/3-zookeeper-server/zoo.cfg

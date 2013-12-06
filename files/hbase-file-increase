@@ -1,0 +1,13 @@
+#!/bin/bash
+
+extraContent="hdfs  -       nofile  32768
+hbase -       nofile  32768"
+
+if grep -F -q "$extraContent" /etc/security/limits.conf
+then
+    echo "Content already included"
+
+else
+    echo "Content now added"
+    echo "$extraContent" >> /etc/security/limits.conf
+fi

@@ -1,0 +1,109 @@
+entity HBaseMaster extends ip::services::Server:
+
+end
+
+entity HBaseRegion extends ip::services::Server:
+
+end
+
+entity HadoopHDFS extends ip::services::Server:
+    string port = "9000"
+    string directory = "hbase"
+    string nameDir = "/var/lib/hadoop-hdfs/cache/hdfs/dfs/name"
+end
+
+entity Zookeeper extends ip::services::Server:
+    string port = "2181"
+    string directory = "/var/lib/zookeeper"
+end
+
+entity HBaseCluster:
+
+end
+
+HBaseCluster cluster [1] -- [1] HBaseMaster master
+HBaseCluster cluster [1] -- [1:] HBaseRegion regions
+HBaseCluster cluster [1] -- [1] HadoopHDFS hdfs
+HBaseCluster cluster [1] -- [1:] Zookeeper zookeepers
+
+
+
+implement HBaseMaster using masterImpl, repo, fileIncrease
+implement HBaseRegion using regionImpl, repo, fileIncrease
+implement Zookeeper using zookeeperImpl, repo
+implement HadoopHDFS using hdfsImpl, repo
+implement HBaseCluster using std::none
+
+implementation masterImpl:
+    pkg = std::Package(host = host, name = "hbase-master", state = "installed")
+    
+    config = std::ConfigFile(host = host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
+                             requires = pkg, reload = true)
+    
+    svc = std::Service(host = host, name = "hbase-master", state = "running", onboot = true)
+    svc.requires = [pkg, config]
+    svc.require = std::Service[host = host, name = "hbase-file-increase"]
+end
+
+implementation regionImpl:
+    pkg = std::Package(host = host, name = "hbase-regionserver", state = "installed")
+    
+    config = std::ConfigFile(host = host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
+                             requires = pkg, reload = true)
+        
+    svc = std::Service(host = host, name = "hbase-regionserver", state = "running", onboot = true)
+    svc.requires = [pkg, config]
+    svc.require = std::Service[host = host, name = "hbase-file-increase"]
+
+end
+
+implementation zookeeperImpl:
+    pkg = std::Package(host = host, name = "zookeeper-server", state = "installed")
+    
+    svcFile = std::ConfigFile(host = host, path = "/etc/init.d/zookeeper-server", 
+                              content = template("hbase/zookeeper-server.service.tmpl"), 
+                             requires = pkg, reload = true)
+      
+    svc = std::Service(host = host, name = "zookeeper-server", state = "running", onboot = true)
+    svc.requires = [pkg, svcFile]
+end
+
+implementation hdfsImpl:
+    pkg = std::Package(host = host, name = "hadoop-hdfs", state = "installed")
+    
+    coresite = std::ConfigFile(host = host, path = "/etc/hadoop/conf/core-site.xml", 
+                               content = template("hbase/core-site.xml.tmpl"), 
+                               requires = pkg, reload = true)
+    
+    hbasehdfs = std::ConfigFile(host = host, path = "/etc/hadoop/conf/hdfs-site.xml", 
+                               content = template("hbase/hdfs-site.xml.tmpl"), 
+                               requires = pkg, reload = true)
+      
+    fileHDFS = std::File(host = host, path = "/usr/bin/hbase-hdfs", content = template("hbase/hbase-hdfs.tmpl"), 
+                             owner = "root", group = "root", mode = 755)
+    
+    svcHDFSFile = std::File(host = host, path = "/lib/systemd/system/hbase-hdfs.service", 
+                                content = file("hbase/hbase-hdfs.service"), owner = "root", 
+                                group = "root", mode = 755)
+    
+    svcHDFS = std::Service(host = host, name = "hbase-hdfs", state = "running", 
+                           requires = [fileHDFS, svcHDFSFile, pkg, coresite, hbasehdfs])
+
+end
+
+implementation repo:
+    r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
+    r.provides = [std::Package[host = host, name = "hbase-master"], 
+                  std::Package[host = host, name = "hbase-regionserver"], 
+                  std::Package[host = host, name = "hadoop-hdfs"], 
+                  std::Package[host = host, name = "zookeeper-server"]]
+end
+
+implementation fileIncrease:
+    fileIncrease = std::File(host = host, path = "/usr/bin/hbase-file-increase", content = file("hbase/hbase-file-increase"), 
+                             owner = "root", group = "root", mode = 755)
+    svcFileIncrease = std::File(host = host, path = "/lib/systemd/system/hbase-file-increase.service", 
+                                content = file("hbase/hbase-file-increase.service"), owner = "root", group = "root", mode = 755)
+    
+    svcIncrease = std::Service(host = host, name = "hbase-file-increase", state = "running", requires = [fileIncrease, svcFileIncrease])
+end
