@@ -101,5 +101,5 @@ implementation fileIncrease:
     svcFileIncrease = std::File(host = host, path = "/lib/systemd/system/hbase-file-increase.service", 
                                 content = file("hbase/hbase-file-increase.service"), owner = "root", group = "root", mode = 755)
     
-    svcIncrease = std::Service(host = host, name = "hbase-file-increase", state = "running", requires = [fileIncrease, svcFileIncrease])
+    svcIncrease = std::Service(host = host, name = "hbase-file-increase", state = "running", onboot = true, requires = [fileIncrease, svcFileIncrease])
 end
