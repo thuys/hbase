@@ -51,7 +51,6 @@ end
 
 implementation masterImpl:
     pkg = std::Package(host = host.host, name = "hbase-master", state = "installed")
-    pkg.requires =  std::File[host = host.host, path = "/etc/yum.repos.d/cloudera.cdh4.repo"]
     
     config = std::ConfigFile(host = host.host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
                              requires = pkg, reload = true)
