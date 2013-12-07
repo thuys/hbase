@@ -2,7 +2,7 @@
 Description=HBase HDFS
 
 [Service]
-Type=simple
+Type=forking
 User=root
 
 ExecStart=/usr/bin/hbase-hdfs
