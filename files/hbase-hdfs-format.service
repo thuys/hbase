@@ -2,10 +2,10 @@
 Description=HBase HDFS
 
 [Service]
-Type=forking
+Type=simple
 User=root
 
-ExecStart=/usr/bin/hbase-hdfs
+ExecStart=/usr/bin/hbase-hdfs-format
 
 [Install]
 WantedBy=multi-user.target

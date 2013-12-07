@@ -4,12 +4,11 @@ if [ ! -d "{{ nameDir }}/current" ]; then
   # Control will enter here if $DIRECTORY doesn't exist.
   echo "Initializing!"
   mkdir -p {{ nameDir }}
-  hdfs namenode -format
+  chmod -R 755 {{ nameDir }}
+  chown -R hdfs {{ nameDir }}
+  chgrp -R hfds {{ nameDir }}
+  su hdfs -c "hdfs namenode -format"
 fi
 
-
-hdfs namenode &
-hdfs datanode &
-
 hadoop fs -mkdir /{{ directory }}
-hadoop fs -chown hbase /{{ directory }} 
+hadoop fs -chown hbase /{{ directory }}     

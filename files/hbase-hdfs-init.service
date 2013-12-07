@@ -1,0 +1,11 @@
+[Unit]
+Description=HBase HDFS
+
+[Service]
+Type=simple
+User=root
+
+ExecStart=/usr/bin/hbase-hdfs-format
+
+[Install]
+WantedBy=multi-user.target

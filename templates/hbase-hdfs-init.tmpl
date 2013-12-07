@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ ! -d "{{ dataDir }}/current" ]; then
+  # Control will enter here if $DIRECTORY doesn't exist.
+  echo "Initializing!"
+  mkdir -p {{ dataDir }}
+  chmod -R 755 {{ dataDir }}
+  chown -R hdfs {{ dataDir }}
+  chgrp -R hfds {{ dataDir }}
+  su hdfs -c "hadoop fs -mkdir /{{ directory }}"
+  su hdfs -c  "hadoop fs -chown hbase /{{ directory }}"   
+  su hdfs -c  "hadoop fs -chown hbase /"  
+fi
+
+  
