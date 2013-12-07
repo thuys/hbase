@@ -5,7 +5,7 @@ Description=HBase HDFS
 Type=simple
 User=root
 
-ExecStart=/usr/bin/hbase-hdfs-format
+ExecStart=/usr/bin/hbase-hdfs-init
 
 [Install]
 WantedBy=multi-user.target

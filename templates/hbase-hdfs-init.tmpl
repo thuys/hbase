@@ -6,10 +6,11 @@ if [ ! -d "{{ dataDir }}/current" ]; then
   mkdir -p {{ dataDir }}
   chmod -R 755 {{ dataDir }}
   chown -R hdfs {{ dataDir }}
-  chgrp -R hfds {{ dataDir }}
+  chgrp -R hdfs {{ dataDir }}
   su hdfs -c "hadoop fs -mkdir /{{ directory }}"
   su hdfs -c  "hadoop fs -chown hbase /{{ directory }}"   
   su hdfs -c  "hadoop fs -chown hbase /"  
+  service hadoop-hdfs-datanode restart
 fi
 
   

@@ -8,6 +8,7 @@ if [ ! -d "{{ nameDir }}/current" ]; then
   chown -R hdfs {{ nameDir }}
   chgrp -R hfds {{ nameDir }}
   su hdfs -c "hdfs namenode -format"
+  service hadoop-hdfs-namenode restart
 fi
 
 hadoop fs -mkdir /{{ directory }}
