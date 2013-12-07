@@ -52,7 +52,7 @@ end
 implementation masterImpl:
     
     pkg = std::Package(host = host.host, name = "hbase-master", state = "installed")
-    pkg.requires = std::File(host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo")
+    pkg.requires = std::File[host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo"]
     
     config = std::ConfigFile(host = host.host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
                              requires = pkg, reload = true)
@@ -65,7 +65,7 @@ end
 
 implementation regionImpl:
     pkg = std::Package(host = host.host, name = "hbase-regionserver", state = "installed")
-    pkg.requires = std::File(host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo")
+    pkg.requires = std::File[host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo"]
     
     config = std::ConfigFile(host = host.host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
                              requires = pkg, reload = true)
@@ -78,7 +78,7 @@ end
 
 implementation zookeeperImpl:
     pkg = std::Package(host = host.host, name = "zookeeper-server", state = "installed")
-    pkg.requires = std::File(host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo")
+    pkg.requires = std::File[host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo"]
     
     svcFile = std::ConfigFile(host = host.host, path = "/etc/init.d/zookeeper-server", 
                               content = template("hbase/zookeeper-server.service.tmpl"), 
@@ -91,7 +91,7 @@ end
 
 implementation hdfsImpl:
     pkg = std::Package(host = host.host, name = "hadoop-hdfs", state = "installed")
-    pkg.requires = std::File(host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo")
+    pkg.requires = std::File[host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo"]
     
     coresite = std::ConfigFile(host = host.host, path = "/etc/hadoop/conf/core-site.xml", 
                                content = template("hbase/core-site.xml.tmpl"), 
