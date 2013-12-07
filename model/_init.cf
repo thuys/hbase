@@ -36,6 +36,7 @@ implement HBaseCluster using std::none
 
 implementation masterImpl:
     pkg = std::Package(host = host, name = "hbase-master", state = "installed")
+    pkg.requires = yum::Repository[host = host, name = "cloudera-cdh4"]
     
     config = std::ConfigFile(host = host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
                              requires = pkg, reload = true)
@@ -47,6 +48,7 @@ end
 
 implementation regionImpl:
     pkg = std::Package(host = host, name = "hbase-regionserver", state = "installed")
+    pkg.requires = yum::Repository[host = host, name = "cloudera-cdh4"]
     
     config = std::ConfigFile(host = host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
                              requires = pkg, reload = true)
@@ -59,6 +61,7 @@ end
 
 implementation zookeeperImpl:
     pkg = std::Package(host = host, name = "zookeeper-server", state = "installed")
+    pkg.requires = yum::Repository[host = host, name = "cloudera-cdh4"]
     
     svcFile = std::ConfigFile(host = host, path = "/etc/init.d/zookeeper-server", 
                               content = template("hbase/zookeeper-server.service.tmpl"), 
@@ -70,6 +73,7 @@ end
 
 implementation hdfsImpl:
     pkg = std::Package(host = host, name = "hadoop-hdfs", state = "installed")
+    pkg.requires = yum::Repository[host = host, name = "cloudera-cdh4"]
     
     coresite = std::ConfigFile(host = host, path = "/etc/hadoop/conf/core-site.xml", 
                                content = template("hbase/core-site.xml.tmpl"), 
@@ -93,10 +97,6 @@ end
 
 implementation repo:
     r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
-    r.provides = std::Package[host = host, name = "hbase-master"]
-    r.provides = std::Package[host = host, name = "hbase-regionserver"]
-    r.provides = std::Package[host = host, name = "hadoop-hdfs"]
-    r.provides = std::Package[host = host, name = "zookeeper-server"]
 end
 
 implementation fileIncrease:
