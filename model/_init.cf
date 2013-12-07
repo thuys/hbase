@@ -86,7 +86,7 @@ implementation hdfsImpl:
                                 content = file("hbase/hbase-hdfs.service"), owner = "root", 
                                 group = "root", mode = 755)
     
-    svcHDFS = std::Service(host = host, name = "hbase-hdfs", state = "running", 
+    svcHDFS = std::Service(host = host, name = "hbase-hdfs", state = "running", onboot = true,
                            requires = [fileHDFS, svcHDFSFile, pkg, coresite, hbasehdfs])
 
 end
