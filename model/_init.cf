@@ -76,9 +76,10 @@ end
 implementation zookeeperImpl:
     pkg = std::Package(host = host.host, name = "zookeeper-server", state = "installed")
     
-    svcFile = std::ConfigFile(host = host.host, path = "/etc/init.d/zookeeper-server", 
+    svcFile = std::File(host = host.host, path = "/etc/init.d/zookeeper-server", 
                               content = template("hbase/zookeeper-server.service.tmpl"), 
-                             requires = pkg, reload = true)
+                             requires = pkg, reload = true,
+                             owner = "root", group = "root", mode = 755)
       
     svc = std::Service(host = host.host, name = "zookeeper-server", state = "running", onboot = true)
     svc.requires = [pkg, svcFile]
