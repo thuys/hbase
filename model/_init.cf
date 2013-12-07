@@ -100,7 +100,7 @@ implementation hdfsImpl:
                                content = template("hbase/hdfs-site.xml.tmpl"), 
                                requires = pkg, reload = true)
     
-    """ Formatting the namenode """
+    # Formatting the namenode 
     fileFormat = std::File(host = host.host, path = "/usr/bin/hbase-hdfs-format", content = template("hbase/hbase-hdfs-format.tmpl"), 
                              owner = "root", group = "root", mode = 755)
     
@@ -110,7 +110,7 @@ implementation hdfsImpl:
     svcFormat = std::Service(host = host.host, name = "hbase-hdfs-format", state = "running", onboot = true,
                            requires = [fileFormat, svcFormatFile])
     
-    """ Starting the nodes """
+    # Starting the nodes
     svcNameNode = std::Service(host = host.host, name = "hadoop-hdfs-namenode", state = "running", onboot = true,
                            requires = [pkg, pkgNameNode, coresite, hbasehdfs, svcFormat])
     
@@ -118,7 +118,7 @@ implementation hdfsImpl:
                            requires = [pkg, svcNameNode, pkgDataNode, coresite, hbasehdfs, svcFormat])
 
     
-    """ Starting the init """    
+    #Starting the init
     fileInit = std::File(host = host.host, path = "/usr/bin/hbase-hdfs-init", content = template("hbase/hbase-hdfs-init.tmpl"), 
                              owner = "root", group = "root", mode = 755)
     
