@@ -1,7 +1,7 @@
-vm1 = ip::Host(name = "vmHB1", os = "fedora-18", ip = "172.16.32.2")
-vm2 = ip::Host(name = "vmHB5", os = "fedora-18", ip = "172.16.32.23")
-vm3 = ip::Host(name = "vmHB3", os = "fedora-18", ip = "172.16.32.32")
-vm4 = ip::Host(name = "vmHB4", os = "fedora-18", ip = "172.16.32.29")
+vm1 = ip::Host(name = "vmhb1", os = "fedora-18", ip = "172.16.32.2")
+vm2 = ip::Host(name = "vmhb5", os = "fedora-18", ip = "172.16.32.23")
+vm3 = ip::Host(name = "vmhb3", os = "fedora-18", ip = "172.16.32.32")
+vm4 = ip::Host(name = "vmhb4", os = "fedora-18", ip = "172.16.32.29")
 
 master = hbase::HBaseMaster(host = vm1)
 region1 = hbase::HBaseRegion(host = vm2)
