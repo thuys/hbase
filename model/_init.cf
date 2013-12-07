@@ -44,8 +44,8 @@ implement HBaseCluster using std::none
 implement JavaHost using javaHost
 
 implementation javaHost:
-    java = std::Package(host = host.host, name = "java", state = "installed")
-    r = yum::Repository(host = host.host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
+    java = std::Package(host = host, name = "java", state = "installed")
+    r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
 
 end
 
