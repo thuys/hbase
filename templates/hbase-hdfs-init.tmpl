@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -d "{{ dataDir }}/current" ]; then
+if [ ! "hadoop fs -test -e /{{ directory }}" ]; then
   # Control will enter here if $DIRECTORY doesn't exist.
   echo "Initializing!"
   mkdir -p {{ dataDir }}
