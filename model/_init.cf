@@ -93,10 +93,10 @@ end
 
 implementation repo:
     r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
-    r.provides = [std::Package[host = host, name = "hbase-master"], 
-                  std::Package[host = host, name = "hbase-regionserver"], 
-                  std::Package[host = host, name = "hadoop-hdfs"], 
-                  std::Package[host = host, name = "zookeeper-server"]]
+    r.provides = std::Package[host = host, name = "hbase-master"]
+    r.provides = std::Package[host = host, name = "hbase-regionserver"]
+    r.provides = std::Package[host = host, name = "hadoop-hdfs"]
+    r.provides = std::Package[host = host, name = "zookeeper-server"]
 end
 
 implementation fileIncrease:
