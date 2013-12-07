@@ -1,18 +1,18 @@
-entity HBaseMaster extends ip::services::Server:
+entity HBaseMaster:
 
 end
 
-entity HBaseRegion extends ip::services::Server:
+entity HBaseRegion:
 
 end
 
-entity HadoopHDFS extends ip::services::Server:
+entity HadoopHDFS:
     string port = "9000"
     string directory = "hbase"
     string nameDir = "/var/lib/hadoop-hdfs/cache/hdfs/dfs/name"
 end
 
-entity Zookeeper extends ip::services::Server:
+entity Zookeeper:
     string port = "2181"
     string directory = "/var/lib/zookeeper"
 end
@@ -21,11 +21,19 @@ entity HBaseCluster:
 
 end
 
+entity JavaHost extends ip::services::Server:
+
+end 
+
 HBaseCluster cluster [1] -- [1] HBaseMaster master
 HBaseCluster cluster [1] -- [1:] HBaseRegion regions
 HBaseCluster cluster [1] -- [1] HadoopHDFS hdfs
 HBaseCluster cluster [1] -- [1:] Zookeeper zookeepers
 
+JavaHost host [1] -- [0:] HBaseMaster master
+JavaHost host [1] -- [0:] HBaseRegion regions
+JavaHost host [1] -- [0:] HadoopHDFS hdfs
+JavaHost host [1] -- [0:] Zookeeper zookeepers
 
 
 implement HBaseMaster using masterImpl, fileIncrease
@@ -33,81 +41,83 @@ implement HBaseRegion using regionImpl, fileIncrease
 implement Zookeeper using zookeeperImpl
 implement HadoopHDFS using hdfsImpl
 implement HBaseCluster using std::none
+implement JavaHost using javaHost
+
+implementation javaHost:
+    java = std::Package(host = host.host, name = "java", state = "installed")
+    r = yum::Repository(host = host.host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
+
+end
 
 implementation masterImpl:
-    r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
-    java = std::Package(host = host, name = "java", state = "installed")
     
-    pkg = std::Package(host = host, name = "hbase-master", state = "installed", requires = r)
+    pkg = std::Package(host = host.host, name = "hbase-master", state = "installed")
+    pkg.requires = std::File(host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo")
     
-    config = std::ConfigFile(host = host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
+    config = std::ConfigFile(host = host.host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
                              requires = pkg, reload = true)
     
-    svc = std::Service(host = host, name = "hbase-master", state = "running", onboot = true)
-    svc.requires = [pkg, config, java]
-    svc.requires = std::Service[host = host, name = "hbase-file-increase"]
+    svc = std::Service(host = host.host, name = "hbase-master", state = "running", onboot = true)
+    svc.requires = [pkg, config]
+    svc.requires = std::Service[host = host.host, name = "hbase-file-increase"]
+    svc.requires = std::Package[host = host.host, name = "java"]
 end
 
 implementation regionImpl:
-    r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
-    java = std::Package(host = host, name = "java", state = "installed")
+    pkg = std::Package(host = host.host, name = "hbase-regionserver", state = "installed")
+    pkg.requires = std::File(host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo")
     
-    pkg = std::Package(host = host, name = "hbase-regionserver", state = "installed", requires = r)
-    
-    config = std::ConfigFile(host = host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
+    config = std::ConfigFile(host = host.host, path = "/etc/hbase/conf/hbase-site.xml", content = template("hbase/hbase-site.conf.tmpl"), 
                              requires = pkg, reload = true)
         
-    svc = std::Service(host = host, name = "hbase-regionserver", state = "running", onboot = true)
+    svc = std::Service(host = host.host, name = "hbase-regionserver", state = "running", onboot = true)
     svc.requires = [pkg, config]
-    svc.requires = std::Service[host = host, name = "hbase-file-increase"]
-
+    svc.requires = std::Service[host = host.host, name = "hbase-file-increase"]
+    svc.requires = std::Package[host = host.host, name = "java"]
 end
 
 implementation zookeeperImpl:
-    r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
-    java = std::Package(host = host, name = "java", state = "installed")
+    pkg = std::Package(host = host.host, name = "zookeeper-server", state = "installed")
+    pkg.requires = std::File(host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo")
     
-    pkg = std::Package(host = host, name = "zookeeper-server", state = "installed", requires = r)
-    
-    svcFile = std::ConfigFile(host = host, path = "/etc/init.d/zookeeper-server", 
+    svcFile = std::ConfigFile(host = host.host, path = "/etc/init.d/zookeeper-server", 
                               content = template("hbase/zookeeper-server.service.tmpl"), 
                              requires = pkg, reload = true)
       
-    svc = std::Service(host = host, name = "zookeeper-server", state = "running", onboot = true)
+    svc = std::Service(host = host.host, name = "zookeeper-server", state = "running", onboot = true)
     svc.requires = [pkg, svcFile]
+    svc.requires = std::Package[host = host.host, name = "java"]
 end
 
 implementation hdfsImpl:
-    r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
-    java = std::Package(host = host, name = "java", state = "installed")
+    pkg = std::Package(host = host.host, name = "hadoop-hdfs", state = "installed")
+    pkg.requires = std::File(host = host.host, path = "/etc/yum.repos.d/cloudera-cdh4.repo")
     
-    pkg = std::Package(host = host, name = "hadoop-hdfs", state = "installed", requires = r)
-    
-    coresite = std::ConfigFile(host = host, path = "/etc/hadoop/conf/core-site.xml", 
+    coresite = std::ConfigFile(host = host.host, path = "/etc/hadoop/conf/core-site.xml", 
                                content = template("hbase/core-site.xml.tmpl"), 
                                requires = pkg, reload = true)
     
-    hbasehdfs = std::ConfigFile(host = host, path = "/etc/hadoop/conf/hdfs-site.xml", 
+    hbasehdfs = std::ConfigFile(host = host.host, path = "/etc/hadoop/conf/hdfs-site.xml", 
                                content = template("hbase/hdfs-site.xml.tmpl"), 
                                requires = pkg, reload = true)
       
-    fileHDFS = std::File(host = host, path = "/usr/bin/hbase-hdfs", content = template("hbase/hbase-hdfs.tmpl"), 
+    fileHDFS = std::File(host = host.host, path = "/usr/bin/hbase-hdfs", content = template("hbase/hbase-hdfs.tmpl"), 
                              owner = "root", group = "root", mode = 755)
     
-    svcHDFSFile = std::File(host = host, path = "/lib/systemd/system/hbase-hdfs.service", 
+    svcHDFSFile = std::File(host = host.host, path = "/lib/systemd/system/hbase-hdfs.service", 
                                 content = file("hbase/hbase-hdfs.service"), owner = "root", 
                                 group = "root", mode = 755)
     
-    svcHDFS = std::Service(host = host, name = "hbase-hdfs", state = "running", onboot = true,
+    svcHDFS = std::Service(host = host.host, name = "hbase-hdfs", state = "running", onboot = true,
                            requires = [fileHDFS, svcHDFSFile, pkg, coresite, hbasehdfs])
-
+    svcHDFS.requires = std::Package[host = host.host, name = "java"]
 end
 
 implementation fileIncrease:
-    fileIncrease = std::File(host = host, path = "/usr/bin/hbase-file-increase", content = file("hbase/hbase-file-increase"), 
+    fileIncrease = std::File(host = host.host, path = "/usr/bin/hbase-file-increase", content = file("hbase/hbase-file-increase"), 
                              owner = "root", group = "root", mode = 755)
-    svcFileIncrease = std::File(host = host, path = "/lib/systemd/system/hbase-file-increase.service", 
+    svcFileIncrease = std::File(host = host.host, path = "/lib/systemd/system/hbase-file-increase.service", 
                                 content = file("hbase/hbase-file-increase.service"), owner = "root", group = "root", mode = 755)
     
-    svcIncrease = std::Service(host = host, name = "hbase-file-increase", state = "running", onboot = true, requires = [fileIncrease, svcFileIncrease])
+    svcIncrease = std::Service(host = host.host, name = "hbase-file-increase", state = "running", onboot = true, requires = [fileIncrease, svcFileIncrease])
 end

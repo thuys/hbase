@@ -7,7 +7,7 @@
     </property>
     <property>
         <name>hbase.rootdir</name>
-        <value>hdfs://{{ cluster.hdfs.name }}:{{ cluster.hdfs.port }}/{{ cluster.hdfs.directory }} </value>
+        <value>hdfs://{{ cluster.hdfs.host.host.name }}:{{ cluster.hdfs.port }}/{{ cluster.hdfs.directory }} </value>
     </property>
     <property>
         <name>hbase.zookeeper.property.clientPort</name>
@@ -16,7 +16,7 @@
     <property>
         <name>hbase.zookeeper.quorum</name>
         <value>{%for zookeeper in cluster.zookeepers -%}
-                {{ zookeeper.name }}
+                {{ zookeeper.host.host.name }}
                     {%- if not loop.last -%} 
                         {{ ','}} 
                     {%- endif -%}
