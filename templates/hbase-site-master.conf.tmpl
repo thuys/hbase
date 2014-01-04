@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl" ?>
+<configuration>
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.master.port</name>
+        <value>{{ port }}</value>
+    </property>
+    <property>
+        <name>hbase.rootdir</name>
+        <value>hdfs://{{ cluster.hdfs.host.host.name }}:{{ cluster.hdfs.port }}/{{ cluster.hdfs.directory }}</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.property.clientPort</name>
+        <value>{{ cluster.zookeepers[0].port }}</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>{%for zookeeper in cluster.zookeepers -%}
+                {{ zookeeper.host.host.name }}
+                    {%- if not loop.last -%} 
+                        {{ ','}} 
+                    {%- endif -%}
+            {%- endfor %}</value>
+    </property>
+</configuration>
