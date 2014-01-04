@@ -1,3 +1,7 @@
+entity HBaseBasic extends ip::services::Server:
+
+end 
+
 entity HBaseMaster:
 
 end
@@ -22,31 +26,29 @@ entity HBaseCluster:
 
 end
 
-entity JavaHost extends ip::services::Server:
-
-end 
 
 HBaseCluster cluster [1] -- [1] HBaseMaster master
 HBaseCluster cluster [1] -- [1:] HBaseRegion regions
 HBaseCluster cluster [1] -- [1] HadoopHDFS hdfs
 HBaseCluster cluster [1] -- [1:] Zookeeper zookeepers
 
-JavaHost host [1] -- [0:] HBaseMaster master
-JavaHost host [1] -- [0:] HBaseRegion regions
-JavaHost host [1] -- [0:] HadoopHDFS hdfs
-JavaHost host [1] -- [0:] Zookeeper zookeepers
+HBaseBasic host [1] -- [0:] HBaseMaster master
+HBaseBasic host [1] -- [0:] HBaseRegion regions
+HBaseBasic host [1] -- [0:] HadoopHDFS hdfs
+HBaseBasic host [1] -- [0:] Zookeeper zookeepers
 
 
 implement HBaseMaster using masterImpl, fileIncrease
 implement HBaseRegion using regionImpl, fileIncrease
 implement Zookeeper using zookeeperImpl
-implement HadoopHDFS using hdfsImpl
+implement HadoopHDFS using hdfsImpls
 implement HBaseCluster using std::none
-implement JavaHost using javaHost
+implement HBaseBasic using hbaseBasic
 
-implementation javaHost:
+implementation hbaseBasic:
     java = std::Package(host = host, name = "java", state = "installed")
     r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
+    pkg = std::Package(host = host.host, name = "hbase", state = "installed", requires = r)
 
 end
 
