@@ -41,7 +41,7 @@ HBaseBasic host [1] -- [0:] Zookeeper zookeepers
 implement HBaseMaster using masterImpl, fileIncrease
 implement HBaseRegion using regionImpl, fileIncrease
 implement Zookeeper using zookeeperImpl
-implement HadoopHDFS using hdfsImpls
+implement HadoopHDFS using hdfsImpl
 implement HBaseCluster using std::none
 implement HBaseBasic using hbaseBasic
 
