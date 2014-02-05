@@ -27,7 +27,7 @@ entity HBaseCluster:
 end
 
 
-HBaseCluster cluster [1] -- [1] HBaseMaster master
+HBaseCluster cluster [1] -- [1:] HBaseMaster master
 HBaseCluster cluster [1] -- [1:] HBaseRegion regions
 HBaseCluster cluster [1] -- [1] HadoopHDFS hdfs
 HBaseCluster cluster [1] -- [1:] Zookeeper zookeepers
