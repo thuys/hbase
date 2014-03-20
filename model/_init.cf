@@ -147,20 +147,20 @@ implementation hdfsImplMaster:
 end
 
 implementation hdfsDataNodeImpl:
-    pkgDataNode = std::Package(host = host.host, name = "hadoop-hdfs-datanode", state = "installed", requires = pkg)
+    pkgDataNode = std::Package(host = host.host, name = "hadoop-hdfs-datanode", state = "installed")
     
     coresite = std::ConfigFile(host = host.host, path = "/etc/hadoop/conf/core-site.xml", 
                                content = template("hbase/core-site-data.xml.tmpl"), 
-                               requires = pkg, reload = true)
+                               requires = pkgDataNode, reload = true)
     
     hbasehdfs = std::ConfigFile(host = host.host, path = "/etc/hadoop/conf/hdfs-site.xml", 
                                content = template("hbase/hdfs-site-data.xml.tmpl"), 
-                               requires = pkg, reload = true)
+                               requires = pkgDataNode, reload = true)
     
     
     # Starting the nodes 
     svcDataNode = std::Service(host = host.host, name = "hadoop-hdfs-datanode", state = "running", onboot = true,
-                           requires = [pkgDataNode, coresite, hbasehdfs, svcFormat])
+                           requires = [pkgDataNode, coresite, hbasehdfs])
 
     
     #Starting the init
@@ -171,7 +171,7 @@ implementation hdfsDataNodeImpl:
                                 content = file("hbase/hbase-hdfs-init.service"), owner = "root", 
                                 group = "root", mode = 755)
     svcInit = std::Service(host = host.host, name = "hbase-hdfs-init", state = "running", onboot = true,
-                           requires = [fileInit, svcInitFile, svcNameNode, svcDataNode])
+                           requires = [fileInit, svcInitFile, svcDataNode])
 end
 
 
