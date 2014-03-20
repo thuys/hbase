@@ -38,7 +38,8 @@ HBaseCluster cluster [1] -- [1:] HBaseMaster masters
 HBaseCluster cluster [1] -- [1:] HBaseRegion regions
 HBaseCluster cluster [1] -- [1] HadoopHDFS hdfs
 HBaseCluster cluster [1] -- [1:] Zookeeper zookeepers
-HadoopHDFS hdfs [1] -- [1] HadoopDataHDFS dataNodes
+
+HadoopHDFS hdfs [1] -- [0:] HadoopDataHDFS dataNodes
 
 HBaseBasic host [1] -- [0:1] HBaseMaster master
 HBaseBasic host [1] -- [0:1] HBaseRegion regions
@@ -121,6 +122,8 @@ implementation hdfsImplMaster:
                                 group = "root", mode = 755)
     svcFormat = std::Service(host = host.host, name = "hbase-hdfs-format", state = "running", onboot = true,
                            requires = [fileFormat, svcFormatFile])
+                           
+                           
     slavesFile = std::File(host = host.host, path = "/etc/hadoop/conf/slaves", 
                                 content = template("hbase/slaves.tmpl"), owner = "root", 
                                 group = "root", mode = 755)
