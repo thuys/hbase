@@ -102,7 +102,6 @@ end
 
 implementation hdfsImplMaster:
     pkg = std::Package(host = host.host, name = "hadoop-hdfs", state = "installed")
-    pkgNameNode = std::Package(host = host.host, name = "hadoop-hdfs-namenode", state = "installed", requires = pkg)
     pkgDataNode = std::Package(host = host.host, name = "hadoop-hdfs-datanode", state = "installed", requires = pkg)
     
     coresite = std::ConfigFile(host = host.host, path = "/etc/hadoop/conf/core-site.xml", 
@@ -131,10 +130,6 @@ implementation hdfsImplMaster:
     svcNameNode = std::Service(host = host.host, name = "hadoop-hdfs-namenode", state = "running", onboot = true,
                            requires = [pkg, pkgNameNode, coresite, hbasehdfs, svcFormat, slavesFile])
     
-    svcDataNode = std::Service(host = host.host, name = "hadoop-hdfs-datanode", state = "running", onboot = true,
-                           requires = [pkg, svcNameNode, pkgDataNode, coresite, hbasehdfs, svcFormat, slavesFile])
-
-    
     #Starting the init
     fileInit = std::File(host = host.host, path = "/usr/bin/hbase-hdfs-init", content = template("hbase/hbase-hdfs-init.tmpl"), 
                              owner = "root", group = "root", mode = 755)
@@ -143,7 +138,7 @@ implementation hdfsImplMaster:
                                 content = file("hbase/hbase-hdfs-init.service"), owner = "root", 
                                 group = "root", mode = 755)
     svcInit = std::Service(host = host.host, name = "hbase-hdfs-init", state = "running", onboot = true,
-                           requires = [fileInit, svcInitFile, svcNameNode, svcDataNode])
+                           requires = [fileInit, svcInitFile, svcNameNode])
 end
 
 implementation hdfsDataNodeImpl:
