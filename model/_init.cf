@@ -125,7 +125,8 @@ implementation hdfsImplMaster:
                            
     slavesFile = std::File(host = host.host, path = "/etc/hadoop/conf/slaves", 
                                 content = template("hbase/slaves.tmpl"), owner = "root", 
-                                group = "root", mode = 755)
+                                group = "root", mode = 755,
+                                requires = pkgNameNode)
     # Starting the nodes
     svcNameNode = std::Service(host = host.host, name = "hadoop-hdfs-namenode", state = "running", onboot = true,
                            requires = [pkg, pkgNameNode, coresite, hbasehdfs, svcFormat, slavesFile])
