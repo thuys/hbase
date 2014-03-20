@@ -17,6 +17,13 @@ entity HadoopHDFS:
     string dataDir = "/var/lib/hadoop-hdfs/cache/hdfs/dfs/data"
 end
 
+
+entity HadoopDataHDFS:
+    string port = "9000"
+    string directory = "hbase"
+    string dataDir = "/var/lib/hadoop-hdfs/cache/hdfs/dfs/data"
+end
+
 entity Zookeeper:
     string port = "2181"
     string directory = "/var/lib/zookeeper"
@@ -31,17 +38,20 @@ HBaseCluster cluster [1] -- [1:] HBaseMaster masters
 HBaseCluster cluster [1] -- [1:] HBaseRegion regions
 HBaseCluster cluster [1] -- [1] HadoopHDFS hdfs
 HBaseCluster cluster [1] -- [1:] Zookeeper zookeepers
+HadoopHDFS hdfs [1] -- [1] HadoopDataHDFS dataNodes
 
-HBaseBasic host [1] -- [0:] HBaseMaster master
-HBaseBasic host [1] -- [0:] HBaseRegion regions
-HBaseBasic host [1] -- [0:] HadoopHDFS hdfs
-HBaseBasic host [1] -- [0:] Zookeeper zookeepers
+HBaseBasic host [1] -- [0:1] HBaseMaster master
+HBaseBasic host [1] -- [0:1] HBaseRegion regions
+HBaseBasic host [1] -- [0:1] HadoopHDFS hdfs
+HBaseBasic host [1] -- [0:1] HadoopDataHDFS dataNodes
+HBaseBasic host [1] -- [0:1] Zookeeper zookeepers
 
 
 implement HBaseMaster using masterImpl, fileIncrease
 implement HBaseRegion using regionImpl, fileIncrease
 implement Zookeeper using zookeeperImpl
-implement HadoopHDFS using hdfsImpl
+implement HadoopHDFS using hdfsImplMaster
+implement HadoopDataHDFS using hdfsDataNodeImpl
 implement HBaseCluster using std::none
 implement HBaseBasic using hbaseBasic
 
@@ -89,7 +99,7 @@ implementation zookeeperImpl:
     svc.requires = std::Package[host = host.host, name = "java"]
 end
 
-implementation hdfsImpl:
+implementation hdfsImplMaster:
     pkg = std::Package(host = host.host, name = "hadoop-hdfs", state = "installed")
     pkgNameNode = std::Package(host = host.host, name = "hadoop-hdfs-namenode", state = "installed", requires = pkg)
     pkgDataNode = std::Package(host = host.host, name = "hadoop-hdfs-datanode", state = "installed", requires = pkg)
@@ -111,13 +121,15 @@ implementation hdfsImpl:
                                 group = "root", mode = 755)
     svcFormat = std::Service(host = host.host, name = "hbase-hdfs-format", state = "running", onboot = true,
                            requires = [fileFormat, svcFormatFile])
-    
+    slavesFile = std::File(host = host.host, path = "/etc/hadoop/conf/slaves", 
+                                content = template("hbase/slaves.tmpl"), owner = "root", 
+                                group = "root", mode = 755)
     # Starting the nodes
     svcNameNode = std::Service(host = host.host, name = "hadoop-hdfs-namenode", state = "running", onboot = true,
-                           requires = [pkg, pkgNameNode, coresite, hbasehdfs, svcFormat])
+                           requires = [pkg, pkgNameNode, coresite, hbasehdfs, svcFormat, slavesFile])
     
     svcDataNode = std::Service(host = host.host, name = "hadoop-hdfs-datanode", state = "running", onboot = true,
-                           requires = [pkg, svcNameNode, pkgDataNode, coresite, hbasehdfs, svcFormat])
+                           requires = [pkg, svcNameNode, pkgDataNode, coresite, hbasehdfs, svcFormat, slavesFile])
 
     
     #Starting the init
@@ -130,6 +142,35 @@ implementation hdfsImpl:
     svcInit = std::Service(host = host.host, name = "hbase-hdfs-init", state = "running", onboot = true,
                            requires = [fileInit, svcInitFile, svcNameNode, svcDataNode])
 end
+
+implementation hdfsDataNodeImpl:
+    pkgDataNode = std::Package(host = host.host, name = "hadoop-hdfs-datanode", state = "installed", requires = pkg)
+    
+    coresite = std::ConfigFile(host = host.host, path = "/etc/hadoop/conf/core-site.xml", 
+                               content = template("hbase/core-site-data.xml.tmpl"), 
+                               requires = pkg, reload = true)
+    
+    hbasehdfs = std::ConfigFile(host = host.host, path = "/etc/hadoop/conf/hdfs-site.xml", 
+                               content = template("hbase/hdfs-site-data.xml.tmpl"), 
+                               requires = pkg, reload = true)
+    
+    
+    # Starting the nodes 
+    svcDataNode = std::Service(host = host.host, name = "hadoop-hdfs-datanode", state = "running", onboot = true,
+                           requires = [pkgDataNode, coresite, hbasehdfs, svcFormat])
+
+    
+    #Starting the init
+    fileInit = std::File(host = host.host, path = "/usr/bin/hbase-hdfs-init", content = template("hbase/hbase-hdfs-init.tmpl"), 
+                             owner = "root", group = "root", mode = 755)
+    
+    svcInitFile = std::File(host = host.host, path = "/lib/systemd/system/hbase-hdfs-init.service", 
+                                content = file("hbase/hbase-hdfs-init.service"), owner = "root", 
+                                group = "root", mode = 755)
+    svcInit = std::Service(host = host.host, name = "hbase-hdfs-init", state = "running", onboot = true,
+                           requires = [fileInit, svcInitFile, svcNameNode, svcDataNode])
+end
+
 
 implementation fileIncrease:
     fileIncrease = std::File(host = host.host, path = "/usr/bin/hbase-file-increase", content = file("hbase/hbase-file-increase"), 
