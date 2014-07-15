@@ -27,6 +27,7 @@ end
 entity Zookeeper:
     string port = "2181"
     string directory = "/var/lib/zookeeper"
+    string number = "1"
 end
 
 entity HBaseCluster:
@@ -94,9 +95,16 @@ implementation zookeeperImpl:
                               content = template("hbase/zookeeper-server.service.tmpl"), 
                              requires = pkg, reload = true,
                              owner = "root", group = "root", mode = 755)
-      
+    zookeeperdir = std::Directory(host = host.host, path = directory, owner = "root", group = "root", mode = 777, reload = true, 
+    			requires = pkg)
+    			
+    myidFile = std::File(host = host.host, path = "{{directory}}/myid", 
+                              content = template("hbase/zookeeper-myid.tmpl"), 
+                             requires = zookeeperdir, reload = true,
+                             owner = "root", group = "root", mode = 755)
+                             
     svc = std::Service(host = host.host, name = "zookeeper-server", state = "running", onboot = true)
-    svc.requires = [pkg, svcFile]
+    svc.requires = [pkg, svcFile, myidFile]
     svc.requires = std::Package[host = host.host, name = "java"]
 end
 
