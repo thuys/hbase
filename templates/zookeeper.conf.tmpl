@@ -29,6 +29,6 @@ clientPort=2181
 
 {% if cluster.zookeepers is defined %}
 {% for zooServer in cluster.zookeepers %}
-	server.{{ zooServer.number }}={{zooServer.host.host.name}}.:2888:3888
+	server.{{ zooServer.number }}={{zooServer.host.host.name}}:2888:3888
 {% endfor %}
 {% endif %}
