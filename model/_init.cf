@@ -146,7 +146,7 @@ implementation hdfsImplMaster:
     
 #    svcInitFile = std::File(host = host.host, path = "/lib/systemd/system/hbase-hdfs-init.service", 
 #                                content = file("hbase/hbase-hdfs-init.service"), owner = "root", 
-                                group = "root", mode = 755)
+#                                group = "root", mode = 755)
 #    svcInit = std::Service(host = host.host, name = "hbase-hdfs-init", state = "running", onboot = true,
 #                           requires = [fileInit, svcInitFile, svcNameNode])
 end
