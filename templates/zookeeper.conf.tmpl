@@ -28,7 +28,7 @@ dataDir={{ directory }}
 clientPort=2181
 
 {% if cluster.zookeepers is defined %}
-{% for server in cluster.zookeepers %}
-	server.{{ server.number }}={{server.host.host.name}}.:2888:3888
+{% for zooServer in cluster.zookeepers %}
+	server.{{ zooServer.number }}={{zooServer.host.host.name}}.:2888:3888
 {% endfor %}
 {% endif %}

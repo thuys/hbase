@@ -110,9 +110,14 @@ implementation zookeeperImpl:
                               content = template("hbase/zookeeper-myid.tmpl"), 
                              requires = zookeeperdir, reload = true,
                              owner = "root", group = "root", mode = 755)
-                             
+    
+    configFile = std::File(host = host.host, path = "/etc/zookeeper/conf/zoo.cfg", 
+                              content = template("hbase/zookeeper.conf.tmpl"), 
+                             requires = pkg, reload = true,
+                             owner = "root", group = "root", mode = 755)
+                                              
     svc = std::Service(host = host.host, name = "zookeeper-server", state = "running", onboot = true)
-    svc.requires = [pkg, svcFile, myidFile]
+    svc.requires = [pkg, svcFile, myidFile, configFile]
     svc.requires = std::Package[host = host.host, name = "java"]
 end
 
