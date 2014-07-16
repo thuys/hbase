@@ -1,4 +1,4 @@
-updates]
+[updates]
 name=Fedora $releasever - $basearch - Updates
 failovermethod=priority
 #baseurl=http://download.fedoraproject.org/pub/fedora/linux/updates/$releasever/$basearch/
