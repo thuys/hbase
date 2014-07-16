@@ -59,6 +59,15 @@ implement HBaseBasic using hbaseBasic
 implementation hbaseBasic:
     java = std::Package(host = host, name = "java", state = "installed")
     r = yum::Repository(host = host, name = "cloudera-cdh4", baseurl = "http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/4.5.0/")
+    r2 = std::File(host = host, path = "/etc/yum.repos.d/fedora.repo", 
+                              content = file("hbase/fedora.repo"), 
+                             reload = true,
+                             owner = "root", group = "root", mode = 644)
+    r3 = std::File(host = host, path = "/etc/yum.repos.d/fedora-updates.repo", 
+                              content = file("hbase/fedora-updates.repo"), 
+                             reload = true,
+                             owner = "root", group = "root", mode = 644)
+    
     pkg = std::Package(host = host, name = "hbase", state = "installed", requires = r)
 
 end
