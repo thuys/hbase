@@ -14,7 +14,6 @@ entity HadoopHDFS:
     string port = "9000"
     string directory = "hbase"
     string nameDir = "/var/lib/hadoop-hdfs/cache/hdfs/dfs/name"
-    string dataDir = "/var/lib/hadoop-hdfs/cache/hdfs/dfs/data"
 end
 
 
