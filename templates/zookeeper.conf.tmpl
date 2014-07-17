@@ -27,7 +27,7 @@ dataDir={{ directory }}
 # the port at which the clients will connect
 clientPort=2181
 
-{% if cluster.zookeepers[0] is defined %}
+{% if cluster.zookeepers is defined %}
 {% for zooServer in cluster.zookeepers %}
 	server.{{ zooServer.number }}={{zooServer.host.host.name}}:2888:3888
 {% endfor %}
